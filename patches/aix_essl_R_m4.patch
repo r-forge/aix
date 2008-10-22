@@ -1,0 +1,85 @@
+2645,2648c2645,2649
+<   ## use ld for SHLIB_LD) ...
+<   if ${CC} ${LDFLAGS} ${MAIN_LDFLAGS} -o conftest${ac_exeext} \
+<        conftest.${ac_objext} conftestf.${ac_objext} ${FLIBS} \
+<        ${LIBM} ${BLAS_LIBS} 1>&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD;
+---
+>   ## use ld for SHLIB_LD) ... 
+>   ## <FIXME> On AIX we need to export symbols to a file which is not existent in
+>   ##        this stage of the build process. This causes troubles with MAIN_LDFLAGS
+>   ##        therefore they are not included in the test on AIX here. Are these exports 
+>   ##        still necessary on AIX 6.1?</FIXME>
+2650c2651,2657
+<   then
+---
+>   case "${host_os}" in
+> 	aix*)
+> 	    if ${CC} ${LDFLAGS} -o conftest${ac_exeext} \
+> 		conftest.${ac_objext} conftestf.${ac_objext} ${FLIBS} \
+> 		${LIBM} ${BLAS_LIBS} 1>&5 2>&5;
+> 
+> 			then
+2652,2656c2659,2679
+<     output=`./conftest${ac_exeext} 2>&AS_MESSAGE_LOG_FD`
+<     if test ${?} = 0; then
+<       r_cv_zdotu_is_usable=yes
+<     fi
+<   fi
+---
+> 			output=`./conftest${ac_exeext} 2>&5`
+> 			if test ${?} = 0; then
+> 			    r_cv_zdotu_is_usable=yes
+> 			fi
+> 		    fi
+> 		    ;;
+> 		*)
+> 		    if ${CC} ${LDFLAGS} ${MAIN_LDFLAGS} -o conftest${ac_exeext} \
+> 			conftest.${ac_objext} conftestf.${ac_objext} ${FLIBS} \
+> 			${LIBM} ${BLAS_LIBS} 1>&5 2>&5;
+>   ## </NOTE>
+> 			then
+>     ## redirect error messages to config.log
+> 			output=`./conftest${ac_exeext} 2>&5`
+> 			if test ${?} = 0; then
+> 			    r_cv_zdotu_is_usable=yes
+> 			fi
+> 		    fi
+> 		    ;;
+> 	    esac
+> 
+2707c2730
+<   F77_SYMBOL(dsdot)();
+---
+>  /*  F77_SYMBOL(dsdot)(); WARNING: temporary fix for essl */
+2784,2786c2807,2810
+<   if ${CC} ${LDFLAGS} ${MAIN_LDFLAGS} -o conftest${ac_exeext} \
+<        conftest.${ac_objext} ${FLIBS} \
+<        ${LIBM} ${BLAS_LIBS} 1>&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD;
+---
+>   ## <FIXME> On AIX we need to export symbols to a file which is not existent in
+>   ##        this stage of the build process. This causes troubles with MAIN_LDFLAGS
+>   ##        therefore they are not included in the test on AIX here. Are these exports 
+>   ##        still necessary on AIX 6.1?</FIXME>
+2788,2790c2812,2829
+<   then
+<     r_cv_complete_blas=yes
+<   fi
+---
+>   case "${host_os}" in
+>        aix*)
+> 	    if ${CC} ${LDFLAGS} -o conftest${ac_exeext} \
+> 		conftest.${ac_objext} ${FLIBS} \
+> 		${LIBM} ${BLAS_LIBS} 1>&5 2>&5;
+> 		then
+> 		r_cv_complete_blas=yes
+> 	    fi
+> 	    ;;	
+> 	*)
+> 	    if ${CC} ${LDFLAGS} ${MAIN_LDFLAGS} -o conftest${ac_exeext} \
+> 		conftest.${ac_objext} ${FLIBS} \
+> 		${LIBM} ${BLAS_LIBS} 1>&5 2>&5;
+> 		then
+> 		r_cv_complete_blas=yes
+> 	    fi
+> 	    ;;
+>   esac

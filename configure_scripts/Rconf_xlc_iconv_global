@@ -1,0 +1,10 @@
+./configure --prefix="/usr/local/R-2.8.0-xlc" \
+	CC=xlc \
+	CXX=xlc++ \
+	FC=xlf \
+	F77=xlf \
+	CFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict" \
+	FFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict" \
+	FCFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict" \
+	CXXFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict" \
+	LIBS="-L/usr/local/_lib"
