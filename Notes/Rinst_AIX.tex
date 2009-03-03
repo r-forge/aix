@@ -1,0 +1,60 @@
+\subsubsection{AIX}
+
+R has been built successfully on AIX 6.1 on `powerpc', more
+specifically on a platform containing a Power6 processor, by a group
+around Kurt Hornik at the Wirtschaftsuniversit\"at in Vienna. We no
+longer support AIX prior to 4.2, and configure will throw an 
+error on such systems. 
+
+A small part of the software needed to build R and/or install packages
+is available directly from the AIX Installation DVDs, e.g., Java6,
+X11, perl. Further open source software (OSS) is packaged for AIX in so-called
+.rpm files and available from
+the ``AIX Toolbox for Linux Applications'' from
+IBM~\url{http://www-03.ibm.com/systems/power/software/aix/linux/} as
+well as on \url{http://www.oss4aix.org/download}. The latter website typically
+offers more recent versions of the available OSS. All needed tools
+(e.g., gcc, gfortran, libreadline, etc.)
+from those repositories are typically installed to
+\code{/opt/freeware} and hence the executables are found in
+\code{/opt/freeware/bin}, so if using those tools ensure this is in
+your path. 
+
+The recent testing has been done under AIX 6.1 using
+compilers from both the GNU Compiler Collection 4.2.4 which is
+available from both of the above repositories and the IBM C (XL
+C)/FORTRAN (XL F) compilers in several configurations.
+
+
+
+32-bit versions of R could be built with configure --without-iconv as well as --enable-R-shlib. For 64-bit versions he used
+
+     OBJECT_MODE=64
+     CC="gcc -maix64"
+     CXX="g++ -maix64"
+     F77="gfortran -maix64"
+     FC="gfortran -maix64"
+
+and was also able to build with the IBM xlc and Hitachi f90 compilers by
+
+     OBJECT_MODE=64
+     CC="xlc -q64"
+     CXX="g++ -maix64"
+     F77="f90 -cpu=pwr4 -hf77 -parallel=0 -i,L -O3 -64"
+     FC="f90 -cpu=pwr4 -hf77 -parallel=0 -i,L -O3 -64"
+     FLIBS="-L/opt/ofort90/lib -lhf90vecmath -lhf90math -lf90"
+
+Some systems have f95 as an IBM compiler that does not by default accept FORTRAN 77. It needs the flag -qfixed=72, or to be invoked as xlf_r.
+
+The AIX native iconv does not support encodings `latin1' nor `""' and so cannot be used. (As far as we know GNU libiconv could be installed.) Fan Long reports success on AIX 5.3 using
+
+     OBJECT_MODE=64
+     LIBICONV=/where/libiconv/installed
+     CC="xlc_r -q64"
+     CFLAGS="-O -qstrict"
+     CXX="xlC_r -q64"
+     CXXFLAGS="-O -qstrict"
+     F77="xlf_r -q64"
+     AR="ar -X64"
+     CPPFLAGS="-I$LIBICONV/include -I/usr/lpp/X11/include/X11"
+     LDFLAGS="-L$LIBICONV/lib -L/usr/lib -L/usr/X11R6/lib"
