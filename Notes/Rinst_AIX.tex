@@ -1,60 +1,134 @@
-\subsubsection{AIX}
+\documentclass[a4paper]{report}
 
-R has been built successfully on AIX 6.1 on `powerpc', more
-specifically on a platform containing a Power6 processor, by a group
-around Kurt Hornik at the Wirtschaftsuniversit\"at in Vienna. We no
-longer support AIX prior to 4.2, and configure will throw an 
-error on such systems. 
+%% my packages
+\usepackage{hyperref}
+%%\usepackage{amsmath}
+%%\usepackage{amsfonts}
+\usepackage[utf8]{inputenc}
+%%\usepackage[round]{natbib}
+\usepackage{a4wide}
 
-A small part of the software needed to build R and/or install packages
-is available directly from the AIX Installation DVDs, e.g., Java6,
-X11, perl. Further open source software (OSS) is packaged for AIX in so-called
-.rpm files and available from
-the ``AIX Toolbox for Linux Applications'' from
+%%\usepackage{Sweave}
+%%\usepackage{enumerate}
+
+%
+\newcommand{\strong}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\newcommand{\class}[1]{\mbox{\textsf{#1}}}
+\newcommand{\func}[1]{\mbox{\texttt{#1()}}}
+\newcommand{\code}[1]{\mbox{\texttt{#1}}}
+\newcommand{\pkg}[1]{\strong{#1}}
+%\newcommand{\samp}[1]{`\mbox{\texttt{#1}}'}
+\newcommand{\proglang}[1]{\textsf{#1}}
+\newcommand{\set}[1]{\mathcal{#1}}
+
+%% almost as usual
+\author{Stefan Theu\ss{}l}
+%% Working Title
+\title{Update to \proglang{R} Installation and Administration Manual}
+
+\begin{document}
+
+\appendix
+\section{AIX}
+
+\proglang{R} has been built successfully on AIX 6.1 on a `powerpc'
+target, more specifically on a platform running a Power6 processor, by
+a group around Kurt Hornik at the Wirtschaftsuniversit\"at in
+Vienna. We no longer support AIX prior to 4.2, and configure will
+throw an error on such systems. Since \proglang{R}-2.9 it is possible
+to configure without problems using the additional
+argument~\code{--enable-R-shlib}.
+
+A small part of the software needed to build \proglang{R} and/or
+install packages 
+is available directly from the AIX Installation DVDs, e.g., \code{Java6},
+\code{X11}, or \code{perl}. Further open source software (OSS) is
+packaged for AIX in so-called .rpm files and available from
+the ``AIX Toolbox for Linux Applications'' of
 IBM~\url{http://www-03.ibm.com/systems/power/software/aix/linux/} as
-well as on \url{http://www.oss4aix.org/download}. The latter website typically
-offers more recent versions of the available OSS. All needed tools
-(e.g., gcc, gfortran, libreadline, etc.)
-from those repositories are typically installed to
-\code{/opt/freeware} and hence the executables are found in
-\code{/opt/freeware/bin}, so if using those tools ensure this is in
-your path. 
+well as from \url{http://www.oss4aix.org/download}. The latter website
+typically offers more recent versions of the available OSS. All needed
+tools and libraries downloaded from those repositories (e.g.,
+\code{gcc}, \code{gfortran}, \code{libreadline}, \code{make}, etc.)
+are typically installed to \code{/opt/freeware} and hence the
+executables are found in \code{/opt/freeware/bin}, so if using those
+tools ensure this is in your path.
+
+Like on other Unix systems you will need GNU \code{libiconv} as the
+AIX version of \code{iconv} is not sufficiently powerful.
+Additionally, for proper unicode compatibility we recommend to install
+the corresponding package from the ICU project
+(\url{http://www.icu-project.org/download/}). The project
+offers pre-compiled binaries for various platforms which in case of
+AIX can be installed via unpacking the tarball to the root file
+system. 
+
+For full \LaTeX{} support we installed the \TeX{} Live DVD distribution which
+we obtained from \url{http://www.tug.org/texlive/}. It is recommended
+to update the distribution using the \code{tlmgr} update
+manager.
+
+For 64-bit builds of \proglang{R} supporting tcl/tk it is necessary to
+install tcl/tk from sources as pre-compiled binaries supply only 32-bit
+shared objects.
 
 The recent testing has been done under AIX 6.1 using
-compilers from both the GNU Compiler Collection 4.2.4 which is
-available from both of the above repositories and the IBM C (XL
-C)/FORTRAN (XL F) compilers in several configurations.
+compilers from both, the GNU Compiler Collection (version 4.2.4) which is
+available from one of the above OSS repositories, and the IBM C/C++ (XL
+C/C++ 10.01) as well as FORTRAN (XL Fortran 12.01) compilers
+(\url{http://www14.software.ibm.com/webapp/download/byproduct.jsp#X}).
+
+To compile for a 64-bit `powerpc' target (running a Power6 CPU) with
+\code{gcc} 4 we used:
+
+\code{CC ="gcc -maix64 -pthread"}\\
+\code{CXX="g++ -maix64 -pthread"}\\
+\code{FC="gfortran -maix64 -pthread"}\\
+\code{F77="gfortran -maix64 -pthread"}\\
+\code{CFLAGS="-O2 -g -mcpu=power6"}\\
+\code{FFLAGS="-O2 -g -mcpu=power6"}\\
+\code{FCFLAGS="-O2 -g -mcpu=power6"}\\
+
+For the IBM XL compilers we used:
+
+\code{CC=xlc}\\
+\code{CXX=xlc++}\\
+\code{FC=xlf}\\
+\code{F77=xlf}\\
+\code{CFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict -ma"}\\
+\code{FFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict"}\\
+\code{FCFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict"}\\
+\code{CXXFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict"}\\
+
+It is important to note for the IBM compilers that the decision
+for producing 32-bit or 64-bit code is done by setting the
+\code{OBJECT\_MODE} environment variable appropriately (recommended) or
+use an additional compiler flag (\code{-q32} or \code{-q64}). By
+default the IBM XL compilers produce 32 bit code, i.e., if you want to
+build \proglang{R} to support 64-bit you need to export
+\code{OBJECT\_MODE=64} to your environment or, alternatively, use the
+\code{-q64} compiler option.
+
+\subsection{Additional Notes}
+
+For a faster run of the \code{configure} script export the environment
+variable to something other than the Korn shell (\code{ksh}),
+e.g. provided that you have installed \code{bash} you should export
+\code{CONFIG\_SHELL=/usr/bin/bash}. Note: \code{/bin/sh} may refer to
+\code{ksh} on your system. 
 
 
+We recommend to use GNU \code{make} which can be forced to be used on
+your Unix system by setting \code{MAKE=/opt/freeware/bin/make} in your
+environment. 
 
-32-bit versions of R could be built with configure --without-iconv as well as --enable-R-shlib. For 64-bit versions he used
 
-     OBJECT_MODE=64
-     CC="gcc -maix64"
-     CXX="g++ -maix64"
-     F77="gfortran -maix64"
-     FC="gfortran -maix64"
+Software compiled from sources is typically installed to
+\code{/usr/local}, so do not forget to add \code{/usr/local/bin} to
+your \code{PATH} environment variable.
 
-and was also able to build with the IBM xlc and Hitachi f90 compilers by
+Further installation instructions to setup a proper
+\proglang{R} development environment can be found in the ``R on AIX''
+project on R-Forge~(\url{http://r-forge.r-project.org/projects/aix/}).
 
-     OBJECT_MODE=64
-     CC="xlc -q64"
-     CXX="g++ -maix64"
-     F77="f90 -cpu=pwr4 -hf77 -parallel=0 -i,L -O3 -64"
-     FC="f90 -cpu=pwr4 -hf77 -parallel=0 -i,L -O3 -64"
-     FLIBS="-L/opt/ofort90/lib -lhf90vecmath -lhf90math -lf90"
-
-Some systems have f95 as an IBM compiler that does not by default accept FORTRAN 77. It needs the flag -qfixed=72, or to be invoked as xlf_r.
-
-The AIX native iconv does not support encodings `latin1' nor `""' and so cannot be used. (As far as we know GNU libiconv could be installed.) Fan Long reports success on AIX 5.3 using
-
-     OBJECT_MODE=64
-     LIBICONV=/where/libiconv/installed
-     CC="xlc_r -q64"
-     CFLAGS="-O -qstrict"
-     CXX="xlC_r -q64"
-     CXXFLAGS="-O -qstrict"
-     F77="xlf_r -q64"
-     AR="ar -X64"
-     CPPFLAGS="-I$LIBICONV/include -I/usr/lpp/X11/include/X11"
-     LDFLAGS="-L$LIBICONV/lib -L/usr/lib -L/usr/X11R6/lib"
+\end{document}
