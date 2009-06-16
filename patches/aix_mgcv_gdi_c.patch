@@ -1,0 +1,88 @@
+294c294
+<   int *pivot,i,TRUE=1,j;
+---
+>   int *pivot,i,true=1,j;
+308c308
+<     mgcv_qrqy(Qt,X,tau,r,r,r,&TRUE,&TRUE); /* Extracting the orthogonal factor Q' */
+---
+>     mgcv_qrqy(Qt,X,tau,r,r,r,&true,&true); /* Extracting the orthogonal factor Q' */
+617c617
+<   int iter,i,j,k,bt,ct,rSoff,K,Q,Qr,*gamma,*gamma1,*alpha,TRUE=1,FALSE=0,r,max_col,Mf;
+---
+>   int iter,i,j,k,bt,ct,rSoff,K,Q,Qr,*gamma,*gamma1,*alpha,true=1,false=0,r,max_col,Mf;
+691c691
+<     mgcv_symeig(Sb,ev,&Q,&FALSE,&FALSE,&FALSE); /* get eigenvalues (ascending) of scaled sum over alpha */
+---
+>     mgcv_symeig(Sb,ev,&Q,&false,&false,&false); /* get eigenvalues (ascending) of scaled sum over alpha */
+723c723
+<     mgcv_symeig(Sb,ev,&Q,&FALSE,&TRUE,&TRUE); /* get eigen decomposition of dominant term (ev descending) */
+---
+>     mgcv_symeig(Sb,ev,&Q,&false,&true,&true); /* get eigen decomposition of dominant term (ev descending) */
+851c851
+<   int iter,i,j,k,bt,ct,rSoff,K,Q,Qr,*gamma,*gamma1,*alpha,TRUE=1,FALSE=0,r,max_col,Mf,n_gamma1;
+---
+>   int iter,i,j,k,bt,ct,rSoff,K,Q,Qr,*gamma,*gamma1,*alpha,true=1,false=0,r,max_col,Mf,n_gamma1;
+925c925
+<       mgcv_symeig(Sb,ev,&Q,&FALSE,&FALSE,&FALSE); /* get eigenvalues (ascending) of scaled sum over alpha */
+---
+>       mgcv_symeig(Sb,ev,&Q,&false,&false,&false); /* get eigenvalues (ascending) of scaled sum over alpha */
+957c957
+<     mgcv_symeig(Sb,ev,&Q,&FALSE,&TRUE,&TRUE); /* get eigen decomposition of dominant term (ev descending) */
+---
+>     mgcv_symeig(Sb,ev,&Q,&false,&true,&true); /* get eigen decomposition of dominant term (ev descending) */
+1629c1629
+<   int ScS,bt,ct,qM,*pivot,i,j,k,left,tp,n_drop=0,*drop,FALSE=0; 
+---
+>   int ScS,bt,ct,qM,*pivot,i,j,k,left,tp,n_drop=0,*drop,false=0; 
+1729c1729
+<   pivoter(rS,&qM,&ScS,pivot,&FALSE,&FALSE); /* row pivot of rS */
+---
+>   pivoter(rS,&qM,&ScS,pivot,&false,&false); /* row pivot of rS */
+1870c1870
+<     n_eta1=0,n_eta2=0,n_work,deriv2,neg_w=0,*nind,nr,TRUE=1,FALSE=0;
+---
+>     n_eta1=0,n_eta2=0,n_work,deriv2,neg_w=0,*nind,nr,true=1,false=0;
+1916c1916
+<   pivoter(R1,q,q,pivot,&TRUE,&TRUE); /* unpivoting the columns of R1 */
+---
+>   pivoter(R1,q,q,pivot,&true,&true); /* unpivoting the columns of R1 */
+1974c1974
+<   i=1;pivoter(nulli,&rank,&i,pivot1,&FALSE,&FALSE); /* pivoting the rows of nulli */
+---
+>   i=1;pivoter(nulli,&rank,&i,pivot1,&false,&false); /* pivoting the rows of nulli */
+1977c1977
+<     pivoter(R1,q,&rank,pivot1,&TRUE,&FALSE); /* pivot the columns of R1 */
+---
+>     pivoter(R1,q,&rank,pivot1,&true,&false); /* pivot the columns of R1 */
+2078c2078
+<   pivoter(rS,&rank,&ScS,pivot1,&FALSE,&FALSE); /* row pivot of rS */
+---
+>   pivoter(rS,&rank,&ScS,pivot1,&false,&false); /* row pivot of rS */
+2080c2080
+<   pivoter(E,Enrow,&rank,pivot1,&TRUE,&FALSE);  /* column pivot of E */  
+---
+>   pivoter(E,Enrow,&rank,pivot1,&true,&false);  /* column pivot of E */  
+2082c2082
+<   pivoter(X,n,&rank,pivot1,&TRUE,&FALSE);  /* column pivot of X */ 
+---
+>   pivoter(X,n,&rank,pivot1,&true,&false);  /* column pivot of X */ 
+2373c2373
+<     if (*deriv)  pivoter(rS,&rank,&ScS,pivot,&FALSE,&FALSE); /* apply the latest pivoting to rows of rS */
+---
+>     if (*deriv)  pivoter(rS,&rank,&ScS,pivot,&false,&false); /* apply the latest pivoting to rows of rS */
+2386c2386
+<     pivoter(P,&rank,&rank,pivot,&FALSE,&TRUE); /* unpivoting the rows of P */
+---
+>     pivoter(P,&rank,&rank,pivot,&false,&true); /* unpivoting the rows of P */
+2427c2427
+<    qrx <- qr(X,LAPACK=TRUE)
+---
+>    qrx <- qr(X,LAPACK=true)
+2737c2737
+< { int i,j,k,rank,one=1,*pivot,*pivot1,left,tp,neg_w=0,*nind,bt,ct,nr,n_drop=0,*drop,TRUE=1,nz;
+---
+> { int i,j,k,rank,one=1,*pivot,*pivot1,left,tp,neg_w=0,*nind,bt,ct,nr,n_drop=0,*drop,true=1,nz;
+2779c2779
+<   pivoter(R1,q,q,pivot,&TRUE,&TRUE); /* unpivoting the columns of R1 */
+---
+>   pivoter(R1,q,q,pivot,&true,&true); /* unpivoting the columns of R1 */

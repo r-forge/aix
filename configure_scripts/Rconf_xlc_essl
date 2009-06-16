@@ -1,10 +1,15 @@
-./configure --prefix="/usr/local/R-2.8.0-xlc-essl" --with-blas="-lessl -lblas"\
+DATE=`date +%y-%m-%d`
+DIR_PREFIX=/usr/local/share
+FLAVOR=r-patched
+INSTALL_DIR=${DIR_PREFIX}/${FLAVOR}/build.${DATE}
+
+./configure --prefix="$INSTALL_DIR" --with-blas="-lessl -lblas"\
 	CC=xlc \
 	CXX=xlc++ \
 	FC=xlf \
 	F77=xlf \
-	CFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict -ma" \
+	CFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict" \
 	FFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict" \
 	FCFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict" \
 	CXXFLAGS="-qarch=auto -qcache=auto -qtune=auto -O3 -qstrict" \
-    	MAKE=/opt/freeware/bin/make 
+    	MAKE=/opt/freeware/bin/make
