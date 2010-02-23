@@ -4,6 +4,7 @@
 ## Last change: 2009-06-16
 
 ## First define configure arguments for different compilers
+#configure_args="--with-included-gettext --without-system-zlib"
 configure_args=
 
 ## standard GNU compilers
@@ -12,10 +13,14 @@ configure_args_gnu="\
   CXX=\"g++ -maix64 -pthread\" \
   FC=\"gfortran -maix64 -pthread\" \
   F77=\"gfortran -maix64 -pthread\" \
-  CFLAGS=\"-O2 -g -mcpu=power6\" \
-  FFLAGS=\"-O2 -g -mcpu=power6\" \
-  FCFLAGS=\"-O2 -g -mcpu=power6\"\
+  CFLAGS=\"-O2 -g \" \
+  FFLAGS=\"-O2 -g \" \
+  FCFLAGS=\"-O2 -g \"\
   MAKE=/opt/freeware/bin/make"
+
+#  CFLAGS=\"-O2 -g -mcpu=power6\" \
+#  FFLAGS=\"-O2 -g -mcpu=power6\" \
+#  FCFLAGS=\"-O2 -g -mcpu=power6\"\
 
 ## IBM compilers and ESSL
 configure_args_ibm="\
@@ -55,13 +60,18 @@ fi
 ## Setup directories
 
 BUILD_DIR=/home/theussl/src/Rbuild
-SVN_SRC_DIR=/home/theussl/svn/R-2-9-branch
+FLAVOR="R-patched"
+if [[ $FLAVOR = "R-devel" ]] ; then
+    SVN_SRC_DIR=/home/theussl/svn/R-devel
+else
+    SVN_SRC_DIR=/home/theussl/svn/R-2-10-branch
+fi
 PATCH_AIX_R_ESSL=/home/theussl/AIX_scripts/aix_essl_R_m4.patch
 PATCH_AIX_mgcv_gdi=/home/theussl/AIX_scripts/aix_mgcv_gdi_c.patch
+PATCH_AIX_R210_TRE=/home/theussl/AIX_scripts/aix_R210_tre.patch
 
 DATE=`date +%y-%m-%d`
 DIR_PREFIX=/usr/local/share/R
-FLAVOR=R-patched
 
 TARGET_DIR=${COMPILER}-build-${DATE}
 INSTALL_DIR=${DIR_PREFIX}/${FLAVOR}/${TARGET_DIR}
@@ -104,6 +114,9 @@ fi
 echo "Sync recommended packages ..."
 ./tools/rsync-recommended 
 
+echo "Patch TRE ..."
+cat $PATCH_AIX_R210_TRE | patch ./src/extra/tre/tre-internal.h
+
 echo "Patch gdi.c in mgcv ..."
 cd ./src/library/Recommended
 tar xzf mgcv_*.tar.gz
@@ -122,7 +135,8 @@ echo "#############################################################"
 echo "Step 4: Build R"
 echo "#############################################################"
 
-MAKE="make -j8" make
+#MAKE="make -j8" make
+make -j8
 
 echo "Step 5: Install R"
 echo "#############################################################"
